@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import TodoItem from './components/TodoItem';
+import NewTodoForm from './components/NewTodoForm';
+import {Todo} from "./types";
 
 function App() {
+
+  const [text, setText]=useState('');
+  const [todos,setTodos]=useState<Todo[]>([]);
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) =>{
+    setText(event.target.value)
+  }
+
+  const addTodo =()=>{
+
+    const newTodo:Todo ={
+      id: new Date().toString(),
+      title: text,
+      completed: false,
+    }
+    setTodos([newTodo,...todos]);
+    setText('');
+  }
+
+  useEffect( ()=> {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(res => res.json())
+    .then((data: Todo[])=>{
+      setTodos(data);
+    })
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NewTodoForm value={text} onChange={handleInput} handleClick={addTodo} />
+      <TodoItem style={{border:'1px solid white'}} id="112" title="First Todo" completed={false} />
     </div>
   );
 }
