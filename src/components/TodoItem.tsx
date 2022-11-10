@@ -1,7 +1,7 @@
 import React from "react";
 import {Todo} from "../types"
 
-interface TodoItemProps extends Todo{
+interface TodoItemProps extends Todo {
     // id: string,
     // title: string,          Это все будет наследоваться от нашего модуля с типами Todo.ts
     // completed: boolean,

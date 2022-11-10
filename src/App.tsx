@@ -1,26 +1,20 @@
 import { useState, useEffect } from 'react';
-import TodoItem from './components/TodoItem';
+import TodoList from './components/TodoList';
 import NewTodoForm from './components/NewTodoForm';
 import {Todo} from "./types";
 
 function App() {
 
-  const [text, setText]=useState('');
-  const [todos,setTodos]=useState<Todo[]>([]);
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) =>{
-    setText(event.target.value)
-  }
+  const [todos, setTodos]=useState<Todo[]>([]);
 
-  const addTodo =()=>{
-
+  const addTodo = (text:string)=>{
     const newTodo:Todo ={
       id: new Date().toString(),
       title: text,
       completed: false,
     }
     setTodos([newTodo,...todos]);
-    setText('');
   }
 
   useEffect( ()=> {
@@ -33,8 +27,8 @@ function App() {
 
   return (
     <div className="App">
-      <NewTodoForm value={text} onChange={handleInput} handleClick={addTodo} />
-      <TodoItem style={{border:'1px solid white'}} id="112" title="First Todo" completed={false} />
+      <NewTodoForm handleClick={addTodo} />
+      <TodoList list={todos}/>
     </div>
   );
 }
